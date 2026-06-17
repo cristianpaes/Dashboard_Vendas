@@ -262,17 +262,11 @@ streamlit run dashboard.py
 
 ## 📸 Dashboard
 
-Adicione uma captura de tela nesta pasta:
+### Visão Geral
 
-```text
-imagens/dashboard.png
-```
+![Dashboard Comercial](imagens/dashboard.png)
 
-E exiba no README:
-
-```markdown
-![Dashboard](imagens/dashboard.png)
-```
+Painel desenvolvido em Streamlit para acompanhamento de indicadores comerciais, faturamento, lucro, estoque, devoluções e performance de vendedores.
 
 ---
 
