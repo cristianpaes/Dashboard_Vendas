@@ -1,186 +1,319 @@
-# 🔌 Módulo de Conexão SQL Server com SQLAlchemy
+# 📊 Dashboard_Vendas
 
-## 📋 Sobre
+## 🚀 Sobre o Projeto
 
-Este módulo é responsável por criar a conexão entre a aplicação Python e o banco de dados SQL Server utilizando SQLAlchemy e PyODBC.
+O Dashboard_Vendas é uma aplicação desenvolvida em Python utilizando Streamlit, Plotly e SQL Server para análise comercial e monitoramento de indicadores estratégicos.
 
-A conexão é utilizada pelos scripts de ETL, geração de dados e dashboards desenvolvidos no projeto BI Vendas.
+O projeto consome dados diretamente de um Data Warehouse modelado em Star Schema, permitindo a visualização de métricas de vendas, lucro, estoque, devoluções e desempenho comercial em tempo real.
+
+O objetivo é demonstrar conhecimentos em:
+
+- Business Intelligence
+- Data Analytics
+- SQL Server
+- Python
+- Streamlit
+- Plotly
+- Data Warehouse
+- ETL
+- Dashboards Executivos
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## 🛠 Tecnologias Utilizadas
 
 - Python
+- Streamlit
+- Pandas
+- Plotly
+- SQL Server
 - SQLAlchemy
 - PyODBC
-- SQL Server
-- ODBC Driver 17 for SQL Server
 
 ---
 
-## 📂 Arquivo
+## 📂 Estrutura do Projeto
 
 ```text
-conexao.py
+Dashboard_Vendas/
+│
+├── dashboard.py
+├── conexao.py
+├── requirements.txt
+├── README.md
+│
+└── imagens/
+    └── dashboard.png
 ```
 
 ---
 
-## 💻 Código
+## 🔌 Fonte dos Dados
+
+O dashboard consome informações diretamente do banco SQL Server através do SQLAlchemy.
 
 ```python
-from sqlalchemy import create_engine
-
-SERVER = 'localhost'
-DATABASE = 'BI_VENDAS'
-
-connection_string = (
-    f"mssql+pyodbc://@{SERVER}/{DATABASE}"
-    "?driver=ODBC+Driver+17+for+SQL+Server"
-    "&trusted_connection=yes"
-)
-
-engine = create_engine(connection_string)
-```
-
----
-
-## ⚙️ Como Funciona
-
-### Definição do Servidor
-
-```python
-SERVER = 'localhost'
-```
-
-Define o servidor SQL Server que receberá as conexões.
-
----
-
-### Definição do Banco
-
-```python
-DATABASE = 'BI_VENDAS'
-```
-
-Especifica o banco de dados utilizado pela aplicação.
-
----
-
-### String de Conexão
-
-```python
-connection_string = (
-    f"mssql+pyodbc://@{SERVER}/{DATABASE}"
-    "?driver=ODBC+Driver+17+for+SQL+Server"
-    "&trusted_connection=yes"
-)
-```
-
-Parâmetros utilizados:
-
-| Parâmetro | Descrição |
-|------------|------------|
-| mssql+pyodbc | Dialeto SQL Server |
-| SERVER | Nome do servidor |
-| DATABASE | Banco de dados |
-| ODBC Driver 17 | Driver oficial Microsoft |
-| trusted_connection=yes | Autenticação Windows |
-
----
-
-### Criação do Engine
-
-```python
-engine = create_engine(connection_string)
-```
-
-O objeto `engine` será utilizado para:
-
-- Executar consultas SQL
-- Ler dados com Pandas
-- Inserir registros
-- Atualizar tabelas
-- Alimentar dashboards Streamlit
-
----
-
-## 📊 Exemplo de Uso
-
-### Consulta SQL com Pandas
-
-```python
-import pandas as pd
 from conexao import engine
 
-df = pd.read_sql(
-    "SELECT * FROM Fato_Vendas",
-    engine
-)
+query = """
+SELECT *
+FROM VW_DASHBOARD_VENDAS
+"""
+
+df = pd.read_sql(query, engine)
 ```
 
 ---
 
-### Inserção de Dados
+## 📈 Indicadores Principais (KPIs)
+
+O painel apresenta os seguintes indicadores:
+
+### 💰 Faturamento Total
+
+Valor total vendido pela empresa.
+
+### 📈 Lucro Total
+
+Lucro consolidado obtido nas vendas.
+
+### 📦 Quantidade Vendida
+
+Total de produtos comercializados.
+
+### 🎯 Ticket Médio
+
+Valor médio por item vendido.
+
+---
+
+## 📊 Análises Disponíveis
+
+### Evolução Mensal
+
+Acompanhamento do faturamento ao longo dos meses.
+
+Recursos:
+
+- Linha temporal
+- Marcadores
+- Valores formatados
+- Hover personalizado
+
+---
+
+### Top 10 Vendedores
+
+Ranking dos vendedores com maior faturamento.
+
+Permite identificar:
+
+- Melhores desempenhos
+- Produtividade comercial
+- Distribuição das vendas
+
+---
+
+### Faturamento por Estado
+
+Análise geográfica das vendas.
+
+Indicadores:
+
+- Estados com maior faturamento
+- Distribuição regional
+- Participação de mercado
+
+---
+
+### Produtos Mais Vendidos
+
+Ranking dos produtos com maior faturamento.
+
+Auxilia na identificação de:
+
+- Produtos estratégicos
+- Curva ABC
+- Oportunidades comerciais
+
+---
+
+### Devoluções por Motivo
+
+Monitoramento das devoluções realizadas.
+
+Principais métricas:
+
+- Quantidade de devoluções
+- Valor devolvido
+- Motivos mais frequentes
+
+---
+
+### Estoque
+
+Análise dos produtos com maior volume em estoque.
+
+Indicadores:
+
+- Quantidade disponível
+- Custo financeiro do estoque
+- Produtos com maior investimento
+
+---
+
+## 🎨 Interface
+
+O dashboard foi desenvolvido utilizando uma identidade visual moderna inspirada em ferramentas corporativas como:
+
+- Power BI
+- Tableau
+- Looker Studio
+
+Características:
+
+- Layout responsivo
+- Cards KPI personalizados
+- Gráficos interativos
+- Paleta de cores profissional
+- Experiência otimizada para análise de dados
+
+---
+
+## 🏗 Arquitetura da Solução
+
+```text
+SQL Server
+      │
+      ▼
+Views Analíticas
+      │
+      ▼
+SQLAlchemy
+      │
+      ▼
+Pandas
+      │
+      ▼
+Streamlit
+      │
+      ▼
+Dashboard Executivo
+```
+
+---
+
+## 📋 Views Utilizadas
+
+### VW_DASHBOARD_VENDAS
+
+Responsável pelos indicadores gerais de vendas.
+
+### VW_DEVOLUCOES
+
+Responsável pelas análises de devoluções.
+
+### VW_ESTOQUE
+
+Responsável pelos indicadores de estoque.
+
+---
+
+## ▶️ Como Executar
+
+### Instalar dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+Ou:
+
+```bash
+pip install streamlit pandas plotly sqlalchemy pyodbc
+```
+
+---
+
+### Configurar SQL Server
+
+Editar o arquivo:
 
 ```python
-df.to_sql(
-    'Nova_Tabela',
-    engine,
-    if_exists='append',
-    index=False
-)
+conexao.py
 ```
-
----
-
-## 🔐 Segurança
-
-Para ambientes produtivos recomenda-se:
-
-- Utilizar variáveis de ambiente
-- Armazenar credenciais em arquivos `.env`
-- Evitar usuários com privilégios administrativos
-- Utilizar autenticação integrada quando possível
 
 Exemplo:
 
 ```python
-import os
-
-SERVER = os.getenv("DB_SERVER")
-DATABASE = os.getenv("DB_DATABASE")
+SERVER = 'localhost'
+DATABASE = 'BI_VENDAS'
 ```
 
 ---
 
-## 🎯 Objetivos Demonstrados
+### Executar Dashboard
 
-Este módulo demonstra conhecimento em:
+```bash
+streamlit run dashboard.py
+```
 
-- Conexão Python ↔ SQL Server
-- SQLAlchemy
-- Banco de Dados Relacional
-- Integração com Pandas
-- ETL e Data Engineering
+---
+
+## 📸 Dashboard
+
+Adicione uma captura de tela nesta pasta:
+
+```text
+imagens/dashboard.png
+```
+
+E exiba no README:
+
+```markdown
+![Dashboard](imagens/dashboard.png)
+```
+
+---
+
+## 🎯 Competências Demonstradas
+
+Este projeto demonstra experiência em:
+
 - Desenvolvimento de Dashboards
-- Arquitetura de Projetos de Dados
+- Business Intelligence
+- Data Warehouse
+- SQL Server
+- Python
+- Streamlit
+- Plotly
+- SQL Analytics
+- KPIs Gerenciais
+- Visualização de Dados
+- ETL
+- Modelagem Dimensional
 
 ---
 
 ## 👨‍💻 Autor
 
-Cristian Camargo
+### Cristian Camargo
 
-Especialista em:
+Profissional de Tecnologia com mais de 28 anos de experiência atuando em:
 
+- Administração de Banco de Dados
 - SQL Server
+- ERP Sankhya
 - Business Intelligence
 - Data Warehouse
 - Python
-- ERP Sankhya
 - Análise de Dados
 - Infraestrutura e Segurança
 
-LinkedIn:
-https://www.linkedin.com/in/cristiancamargo
+### LinkedIn
+
+www.linkedin.com/in/cristiancamargo
+
+---
+
+⭐ Caso tenha gostado do projeto, deixe uma estrela no repositório.
