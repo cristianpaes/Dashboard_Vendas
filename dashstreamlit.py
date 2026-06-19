@@ -31,41 +31,130 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+/* =========================
+   VARIÁVEIS DE TEMA
+========================= */
+:root {
+    --bg-main: #F3F4F6;
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #111827;
 
-/* Fundo Geral */
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
 
-.stApp {
-    background-color: #F8FAFC;
+    --border: #E5E7EB;
+
+    --shadow: 0 2px 10px rgba(0,0,0,0.08);
+    --radius: 12px;
+
+    --accent: #2563EB; /* azul corporativo */
 }
 
-/* Fonte Global */
-
-html, body, [class*="css"] {
+/* =========================
+   FUNDO GERAL (APP)
+========================= */
+.stApp {
+    background-color: var(--bg-main);
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Títulos */
+/* =========================
+   SIDEBAR (estilo BI)
+========================= */
+[data-testid="stSidebar"] {
+    background-color: var(--bg-sidebar);
+}
 
+/* textos da sidebar */
+[data-testid="stSidebar"] * {
+    color: #FFFFFF !important;
+}
+
+/* =========================
+   CARDS / MÉTRICAS
+========================= */
+div[data-testid="metric-container"] {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: all 0.2s ease-in-out;
+}
+
+div[data-testid="metric-container"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   TIPOGRAFIA
+========================= */
+html, body, [class*="css"] {
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-primary);
+}
+
+/* =========================
+   TÍTULOS (BI STYLE)
+========================= */
 h1 {
-    color: #111827 !important;
+    color: var(--text-primary) !important;
     font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 h2, h3 {
-    color: #111827 !important;
+    color: var(--text-primary) !important;
+    font-weight: 600;
 }
 
 h4 {
-    color: #374151 !important;
-    margin-bottom: 5px;
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    margin-bottom: 6px;
 }
 
-/* Textos */
-
+/* =========================
+   TEXTOS GERAIS
+========================= */
 p, span, label {
-    color: #111827 !important;
+    color: var(--text-primary) !important;
 }
 
+/* =========================
+   BOTÕES (estilo corporativo)
+========================= */
+.stButton > button {
+    background-color: var(--accent);
+    color: white;
+    border-radius: 8px;
+    border: none;
+    padding: 8px 16px;
+    font-weight: 600;
+}
+
+.stButton > button:hover {
+    background-color: #1D4ED8;
+}
+
+/* =========================
+   DATAFRAMES (tabelas BI)
+========================= */
+[data-testid="stDataFrame"] {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+/* =========================
+   EXPANDERS
+========================= */
+.streamlit-expanderHeader {
+    background-color: #FFFFFF;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -81,6 +170,102 @@ FROM VW_DASHBOARD_VENDAS
 """
 
 df = pd.read_sql(query, engine_postgres)
+
+# ==========================================
+# FILTROS
+# ==========================================
+
+st.sidebar.title("📊 Filtros")
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown(
+"""
+### Dashboard Comercial
+
+Análise de vendas, estoque e devoluções.
+
+---
+"""
+)
+
+with st.sidebar.expander("📅 Período", expanded=True):
+
+    anos = sorted(df['ano'].unique())
+
+    anos_selecionados = st.sidebar.multiselect(
+        "Ano",
+        anos,
+        default=anos
+    )
+
+    meses = [
+        'Janeiro','Fevereiro','Março','Abril',
+        'Maio','Junho','Julho','Agosto',
+        'Setembro','Outubro','Novembro','Dezembro'
+    ]
+
+    meses_selecionados = st.sidebar.multiselect(
+        "Mês",
+        meses,
+        default=meses
+    )
+
+with st.sidebar.expander("🌎 Região", expanded=False):
+
+    estados = sorted(df['estado'].dropna().unique())
+
+    estados_selecionados = st.sidebar.multiselect(
+        "Estado",
+        estados,
+        default=estados
+    )
+
+with st.sidebar.expander("👔 Comercial", expanded=False):
+
+    vendedores = sorted(df['nome_vendedor'].dropna().unique())
+
+    vendedores_selecionados = st.sidebar.multiselect(
+        "Vendedor",
+        vendedores,
+        default=vendedores
+    )
+
+with st.sidebar.expander("📦 Produtos", expanded=False):
+
+    categorias = sorted(df['nome_categoria'].dropna().unique())
+
+    categorias_selecionadas = st.sidebar.multiselect(
+        "Categoria",
+        categorias,
+        default=categorias
+    )
+
+    produtos = sorted(df['nome_produto'].dropna().unique())
+
+    produtos_selecionados = st.sidebar.multiselect(
+        "Produto",
+        produtos,
+        default=produtos
+    )
+
+# ==========================================
+# DATAFRAME FILTRADO
+# ==========================================
+
+df_filtrado = df[
+    (df['ano'].isin(anos_selecionados))
+    &
+    (df['nome_mes'].isin(meses_selecionados))
+    &
+    (df['estado'].isin(estados_selecionados))
+    &
+    (df['nome_vendedor'].isin(vendedores_selecionados))
+    &
+    (df['nome_categoria'].isin(categorias_selecionadas))
+    &
+    (df['nome_produto'].isin(produtos_selecionados))
+]
 
 # ==========================================
 # FUNÇÃO MOEDA BR
@@ -120,16 +305,17 @@ Criado por Cristian Camargo
 </p>
 """, unsafe_allow_html=True)
 
+
 # ==========================================
 # KPIs
 # ==========================================
 
 
-faturamento = df['faturamento'].sum()
+faturamento = df_filtrado['faturamento'].sum()
 
-lucro = df['lucro'].sum()
+lucro = df_filtrado['lucro'].sum()
 
-quantidade = df['quantidade_vendida'].sum()
+quantidade = df_filtrado['quantidade_vendida'].sum()    
 
 ticket_medio = (
     faturamento / quantidade
@@ -231,14 +417,15 @@ ordem_meses = {
 
 # MAPEAR ORDEM
 
-df['ordem_mes'] = df['nome_mes'].map(
-    ordem_meses
+df_filtrado['ordem_mes'] = (
+    df_filtrado['nome_mes']
+    .map(ordem_meses)
 )
 
 # AGRUPAR DADOS
 
 vendas_mes = (
-    df.groupby(
+    df_filtrado.groupby(
         ['ano', 'ordem_mes', 'nome_mes']
     )['faturamento']
     .sum()
@@ -459,7 +646,7 @@ st.subheader('Top 10 Vendedores')
 # AGRUPAR DADOS
 
 top_vendedores = (
-    df.groupby('nome_vendedor')['faturamento']
+    df_filtrado.groupby('nome_vendedor')['faturamento']
     .sum()
     .sort_values(ascending=False)
     .head(10)
@@ -533,7 +720,7 @@ st.plotly_chart(
 st.subheader('Faturamento por Estado')
 
 regioes = (
-    df.groupby('estado')['faturamento']
+    df_filtrado.groupby('estado')['faturamento']
     .sum()
     .reset_index()
     .sort_values(
@@ -613,7 +800,7 @@ st.plotly_chart(
 st.subheader('Produtos Mais Vendidos')
 
 produtos = (
-    df.groupby('nome_produto')['faturamento']
+    df_filtrado.groupby('nome_produto')['faturamento']
     .sum()
     .sort_values(ascending=False)
     .head(10)

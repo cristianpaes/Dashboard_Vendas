@@ -17,8 +17,6 @@ df.to_sql(
     index=False
 )
 
-
-
 df = pd.read_sql(
     "SELECT * FROM VW_DASHBOARD_VENDAS",
     engine_sqlserver
