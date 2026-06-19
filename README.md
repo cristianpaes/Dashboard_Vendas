@@ -25,7 +25,10 @@ O projeto foi construído de ponta a ponta, desde a geração dos dados até a d
 
 🔗 [https://dashboardvendasbi2.streamlit.app](https://dashboardvendasbi2.streamlit.app/)
 ---
----
+
+# 📷 Dashboard
+
+![Dashboard](imagens/dashboard.png)
 
 ---
 
@@ -333,11 +336,6 @@ streamlit run dashstreamlit.py
 
 ---
 
-# 📷 Dashboard
-
-![Dashboard](imagens/dashboard.png)
-
----
 
 # 🛠 Bibliotecas Utilizadas
 
