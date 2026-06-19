@@ -16,7 +16,9 @@ COR_DESTAQUE = "#8B5CF6"      # Roxo
 COR_ALERTA = "#F59E0B"        # Laranja
 COR_ERRO = "#EF4444"          # Vermelho
 
-from conexao import engine
+
+
+from conexao_postgres import engine_postgres
 
 # ==========================================
 # CONFIGURAÇÃO DA PÁGINA
@@ -78,7 +80,7 @@ SELECT *
 FROM VW_DASHBOARD_VENDAS
 """
 
-df = pd.read_sql(query, engine)
+df = pd.read_sql(query, engine_postgres)
 
 # ==========================================
 # FUNÇÃO MOEDA BR
@@ -688,16 +690,21 @@ query_devolucao = """
 
 SELECT
 
-    dv.motivo_devolucao,
+    d.motivo_devolucao,
 
-    COUNT(*) AS Qtd_total_Dev,
+    sum(d.quantidade) AS qtd_devolucoes,
 
-    SUM(dv.valor_devolvido) AS Total_Dev
+	count(d.quantidade) as qtd_total_dev,
 
-FROM VW_DEVOLUCOES dv
+    SUM(d.valor_devolvido) AS valor_devolvido
+	
+FROM Fato_Devolucao d
+
+INNER JOIN Dim_Produto p
+ON d.id_produto = p.id_produto
 
 GROUP BY
-    dv.motivo_devolucao
+    d.motivo_devolucao
 
 ORDER BY
     COUNT(*) DESC
@@ -706,20 +713,20 @@ ORDER BY
 
 df_devolucao = pd.read_sql(
     query_devolucao,
-    engine
+    engine_postgres
 )
 
 # FORMATAR MOEDA BR
 
 df_devolucao['valor_formatado'] = (
-    df_devolucao['Total_Dev']
+    df_devolucao['valor_devolvido']
     .apply(moeda_br)
 )
 
 # FORMATAR QUANTIDADE
 
 df_devolucao['qtd_formatada'] = (
-    df_devolucao['Qtd_total_Dev']
+    df_devolucao['qtd_total_dev']
     .apply(
         lambda x: f'{x:,.0f}'.replace(',', '.')
     )
@@ -733,7 +740,7 @@ grafico_devolucao = px.bar(
 
     x='motivo_devolucao',
 
-    y='Qtd_total_Dev',
+    y='qtd_total_dev',
 
     color_discrete_sequence=[COR_ERRO],
 
@@ -742,7 +749,7 @@ grafico_devolucao = px.bar(
     title='Quantidade de Devoluções por Motivo',
 
     hover_data={
-        'Total_Dev': False,
+        'valor_devolvido': False,
         'valor_formatado': False,
         'qtd_formatada': False
     }
@@ -764,7 +771,7 @@ grafico_devolucao.update_traces(
 
 grafico_devolucao.update_traces(
     customdata=df_devolucao[
-        ['Qtd_total_Dev', 'valor_formatado']
+        ['qtd_total_dev', 'valor_formatado']
     ]
 )
 
@@ -796,16 +803,13 @@ st.plotly_chart(
 st.subheader('Top Produtos em Estoque')
 
 query_estoque = """
-
 SELECT *
-
-FROM VW_ESTOQUE
-
+FROM vw_estoque
 """
 
 df_estoque = pd.read_sql(
     query_estoque,
-    engine
+    engine_postgres
 )
 
 # TOP ESTOQUE
