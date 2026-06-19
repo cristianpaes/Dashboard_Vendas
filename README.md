@@ -1,261 +1,145 @@
-# 📊 Dashboard_Vendas
+# 📊 Dashboard Comercial | Python + Streamlit + PostgreSQL
 
-## 🚀 Sobre o Projeto
-
-O Dashboard_Vendas é uma aplicação desenvolvida em Python utilizando Streamlit, Plotly e SQL Server para análise comercial e monitoramento de indicadores estratégicos.
-
-O projeto consome dados diretamente de um Data Warehouse modelado em Star Schema, permitindo a visualização de métricas de vendas, lucro, estoque, devoluções e desempenho comercial em tempo real.
-
-O objetivo é demonstrar conhecimentos em:
-
-- Business Intelligence
-- Data Analytics
-- SQL Server
-- Python
-- Streamlit
-- Plotly
-- Data Warehouse
-- ETL
-- Dashboards Executivos
+Dashboard interativo para análise comercial desenvolvido em **Python**, utilizando **Streamlit**, **PostgreSQL**, **Pandas** e **Plotly**, com visual inspirado no Power BI.
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## 🚀 Tecnologias Utilizadas
 
-- Python
-- Streamlit
-- Pandas
-- Plotly
-- SQL Server
-- SQLAlchemy
-- PyODBC
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-3F4F75?logo=plotly&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white)
+
+---
+
+## 📌 Objetivo
+
+Disponibilizar indicadores estratégicos para acompanhamento da operação comercial, permitindo análises rápidas e suporte à tomada de decisão.
+
+---
+
+## 📈 Principais Indicadores (KPIs)
+
+- 💰 Faturamento Total
+- 📈 Lucro
+- 📦 Quantidade Vendida
+- 🎯 Ticket Médio
+
+---
+
+## 📊 Análises Disponíveis
+
+### 📈 Evolução Mensal do Faturamento
+
+Acompanhamento da evolução das vendas ao longo do tempo.
+
+### 🏆 Top 10 Vendedores
+
+Ranking dos vendedores com maior faturamento.
+
+### 🌎 Faturamento por Estado
+
+Distribuição geográfica das vendas.
+
+### 📦 Produtos Mais Vendidos
+
+Identificação dos produtos com maior receita.
+
+### 🔄 Devoluções por Motivo
+
+Análise das principais causas das devoluções.
+
+### 📋 Controle de Estoque
+
+Monitoramento dos produtos com maior quantidade em estoque.
+
+---
+
+## 🔍 Filtros Dinâmicos
+
+O dashboard permite filtros por:
+
+- Ano
+- Mês
+- Estado
+- Vendedor
+- Categoria
+- Produto
+
+---
+
+## 🎨 Interface
+
+Layout profissional inspirado em ferramentas de Business Intelligence:
+
+✔ Tema corporativo
+
+✔ Cards de indicadores
+
+✔ Gráficos interativos
+
+✔ Sidebar dinâmica
+
+✔ Visual semelhante ao Power BI
+
+---
+
+## 🗄️ Banco de Dados
+
+Fonte dos dados:
+
+### PostgreSQL
+
+Principais objetos utilizados:
+
+- VW_DASHBOARD_VENDAS
+- VW_ESTOQUE
+- Fato_Devolucao
+- Dim_Produto
 
 ---
 
 ## 📂 Estrutura do Projeto
 
 ```text
-Dashboard_Vendas/
+Dashboard_Comercial/
 │
-├── dashboard.py
-├── conexao.py
+├── dashstreamlit.py
+├── conexao_postgres.py
 ├── requirements.txt
 ├── README.md
-│
 └── imagens/
     └── dashboard.png
 ```
 
 ---
 
-## 🔌 Fonte dos Dados
+## ⚙️ Instalação
 
-O dashboard consome informações diretamente do banco SQL Server através do SQLAlchemy.
+Clone o repositório:
 
-```python
-from conexao import engine
-
-query = """
-SELECT *
-FROM VW_DASHBOARD_VENDAS
-"""
-
-df = pd.read_sql(query, engine)
+```bash
+git clone https://github.com/seuusuario/Dashboard_Comercial.git
 ```
 
----
+Entre na pasta:
 
-## 📈 Indicadores Principais (KPIs)
-
-O painel apresenta os seguintes indicadores:
-
-### 💰 Faturamento Total
-
-Valor total vendido pela empresa.
-
-### 📈 Lucro Total
-
-Lucro consolidado obtido nas vendas.
-
-### 📦 Quantidade Vendida
-
-Total de produtos comercializados.
-
-### 🎯 Ticket Médio
-
-Valor médio por item vendido.
-
----
-
-## 📊 Análises Disponíveis
-
-### Evolução Mensal
-
-Acompanhamento do faturamento ao longo dos meses.
-
-Recursos:
-
-- Linha temporal
-- Marcadores
-- Valores formatados
-- Hover personalizado
-
----
-
-### Top 10 Vendedores
-
-Ranking dos vendedores com maior faturamento.
-
-Permite identificar:
-
-- Melhores desempenhos
-- Produtividade comercial
-- Distribuição das vendas
-
----
-
-### Faturamento por Estado
-
-Análise geográfica das vendas.
-
-Indicadores:
-
-- Estados com maior faturamento
-- Distribuição regional
-- Participação de mercado
-
----
-
-### Produtos Mais Vendidos
-
-Ranking dos produtos com maior faturamento.
-
-Auxilia na identificação de:
-
-- Produtos estratégicos
-- Curva ABC
-- Oportunidades comerciais
-
----
-
-### Devoluções por Motivo
-
-Monitoramento das devoluções realizadas.
-
-Principais métricas:
-
-- Quantidade de devoluções
-- Valor devolvido
-- Motivos mais frequentes
-
----
-
-### Estoque
-
-Análise dos produtos com maior volume em estoque.
-
-Indicadores:
-
-- Quantidade disponível
-- Custo financeiro do estoque
-- Produtos com maior investimento
-
----
-
-## 🎨 Interface
-
-O dashboard foi desenvolvido utilizando uma identidade visual moderna inspirada em ferramentas corporativas como:
-
-- Power BI
-- Tableau
-- Looker Studio
-
-Características:
-
-- Layout responsivo
-- Cards KPI personalizados
-- Gráficos interativos
-- Paleta de cores profissional
-- Experiência otimizada para análise de dados
-
----
-
-## 🏗 Arquitetura da Solução
-
-```text
-SQL Server
-      │
-      ▼
-Views Analíticas
-      │
-      ▼
-SQLAlchemy
-      │
-      ▼
-Pandas
-      │
-      ▼
-Streamlit
-      │
-      ▼
-Dashboard Executivo
+```bash
+cd Dashboard_Comercial
 ```
 
----
-
-## 📋 Views Utilizadas
-
-### VW_DASHBOARD_VENDAS
-
-Responsável pelos indicadores gerais de vendas.
-
-### VW_DEVOLUCOES
-
-Responsável pelas análises de devoluções.
-
-### VW_ESTOQUE
-
-Responsável pelos indicadores de estoque.
-
----
-
-## ▶️ Como Executar
-
-### Instalar dependências
+Instale as dependências:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Ou:
+Execute a aplicação:
 
 ```bash
-pip install streamlit pandas plotly sqlalchemy pyodbc
-```
-
----
-
-### Configurar SQL Server
-
-Editar o arquivo:
-
-```python
-conexao.py
-```
-
-Exemplo:
-
-```python
-SERVER = 'localhost'
-DATABASE = 'BI_VENDAS'
-```
-
----
-
-### Executar Dashboard
-
-```bash
-streamlit run dashboard.py
+streamlit run dashstreamlit.py
 ```
 
 ---
@@ -270,22 +154,37 @@ Painel desenvolvido em Streamlit para acompanhamento de indicadores comerciais, 
 
 ---
 
-## 🎯 Competências Demonstradas
+## 🚀 Funcionalidades
 
-Este projeto demonstra experiência em:
+✔ Dashboard responsivo
 
-- Desenvolvimento de Dashboards
-- Business Intelligence
-- Data Warehouse
-- SQL Server
-- Python
-- Streamlit
-- Plotly
-- SQL Analytics
-- KPIs Gerenciais
-- Visualização de Dados
-- ETL
-- Modelagem Dimensional
+✔ KPIs comerciais
+
+✔ Integração com PostgreSQL
+
+✔ Visualização interativa em Plotly
+
+✔ Filtros dinâmicos
+
+✔ Análise de vendas
+
+✔ Análise de estoque
+
+✔ Análise de devoluções
+
+✔ Layout profissional inspirado no Power BI
+
+---
+
+## 🛠️ Bibliotecas Utilizadas
+
+```python
+streamlit
+pandas
+plotly
+sqlalchemy
+psycopg2
+```
 
 ---
 
@@ -293,21 +192,34 @@ Este projeto demonstra experiência em:
 
 ### Cristian Camargo
 
-Profissional de Tecnologia com mais de 28 anos de experiência atuando em:
+**DBA SQL Server | Analista de Dados | Python Developer**
 
-- Administração de Banco de Dados
-- SQL Server
-- ERP Sankhya
-- Business Intelligence
-- Data Warehouse
-- Python
-- Análise de Dados
-- Infraestrutura e Segurança
+💼 LinkedIn:
 
-### LinkedIn
+https://www.linkedin.com/in/cristian-camargo/
 
-www.linkedin.com/in/cristiancamargo
+🌐 Portfólio:
+
+https://cristiancamargo.netlify.app/
+
+📧 Email:
+
+cristianpcpaes@gmail.com
 
 ---
 
-⭐ Caso tenha gostado do projeto, deixe uma estrela no repositório.
+## ⭐ Sobre o Projeto
+
+Projeto desenvolvido para demonstrar conhecimentos em:
+
+- Python
+- Streamlit
+- PostgreSQL
+- SQL
+- Data Visualization
+- Business Intelligence
+- Dashboard Analytics
+
+---
+
+### Se este projeto foi útil, deixe uma ⭐ no repositório.
