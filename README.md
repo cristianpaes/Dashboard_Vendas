@@ -233,8 +233,10 @@ Layout profissional inspirado em ferramentas de Business Intelligence:
 Dashboard_Comercial/
 │
 ├── dashstreamlit.py
+├── conexao_sqlserver.py
 ├── conexao_postgres.py
-├── migracao_sqlserver_postgres.py
+├── migracao_completa.py
+├── Migracao_VIEW.py
 ├── requirements.txt
 ├── README.md
 └── imagens/
