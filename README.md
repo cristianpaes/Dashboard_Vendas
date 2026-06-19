@@ -23,7 +23,7 @@ O projeto foi construído de ponta a ponta, desde a geração dos dados até a d
 ---
 ## 🚀 Acesse a aplicação
 
-🔗 [https://seu-dashboard.streamlit.app](https://dashboardvendasbi2.streamlit.app/)
+🔗 [https://dashboardvendasbi2.streamlit.app](https://dashboardvendasbi2.streamlit.app/)
 ---
 ---
 
